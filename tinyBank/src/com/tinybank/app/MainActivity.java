@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tinyband.app.backend.Server;
+import com.tinybank.app.backend.Server;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
