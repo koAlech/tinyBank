@@ -42,7 +42,7 @@ public class Server {
 						String email = (String) builtUserObject.get("email");
 						String first_name = (String) builtUserObject.get("first_name");
 						String last_name = (String) builtUserObject.get("last_name");
-						boolean active = (boolean) builtUserObject.get("active");
+						Boolean active = (Boolean) builtUserObject.get("active");
 						
 						User user = new User(username, email, first_name, last_name, active);
 						EventBus.postOnMain(context, new LoginEvent(user, true));
