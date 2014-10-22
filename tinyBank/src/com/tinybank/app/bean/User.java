@@ -7,6 +7,15 @@ public class User {
 	private String last_name;
 	private boolean active;
 	
+	public User(String username, String email, String first_name,
+			String last_name, boolean active) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.active = active;
+	}
 	public String getUsername() {
 		return username;
 	}

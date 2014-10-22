@@ -8,6 +8,8 @@ import com.raweng.built.BuiltError;
 import com.raweng.built.BuiltResultCallBack;
 import com.raweng.built.BuiltUser;
 import com.tinybank.app.bean.User;
+import com.tinybank.app.event.EventBus;
+import com.tinybank.app.event.LoginEvent;
 
 public class Server {
 
@@ -26,10 +28,9 @@ public class Server {
 		}
 	}
 
-	public static User login(String username, String password) {
-		User user = null;
-
-		BuiltUser builtUserObject = new BuiltUser();
+	public static void login(String username, String password) {
+		
+		final BuiltUser builtUserObject = new BuiltUser();
 		builtUserObject.login(username, password,
 				new BuiltResultCallBack() {
 					@Override
@@ -37,6 +38,15 @@ public class Server {
 						// user has logged in successfully
 						// builtUserObject.authtoken contains the session
 						// authtoken
+						String username = (String) builtUserObject.get("username");
+						String email = (String) builtUserObject.get("email");
+						String first_name = (String) builtUserObject.get("first_name");
+						String last_name = (String) builtUserObject.get("last_name");
+						boolean active = (boolean) builtUserObject.get("active");
+						
+						User user = new User(username, email, first_name, last_name, active);
+						EventBus.postOnMain(context, new LoginEvent(user, true));
+						
 					}
 
 					@Override
@@ -47,15 +57,12 @@ public class Server {
 								"" + builtErrorObject.getErrorMessage());
 						Log.i("error: ", "" + builtErrorObject.getErrorCode());
 						Log.i("error: ", "" + builtErrorObject.getErrors());
+						EventBus.postOnMain(context, new LoginEvent(null, false));
 					}
 
 					@Override
 					public void onAlways() {
-						// write code here that you want to execute
-						// regardless of success or failure of the operation
 					}
 				});
-
-		return user;
 	}
 }
