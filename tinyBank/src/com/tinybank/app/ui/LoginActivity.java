@@ -1,15 +1,21 @@
 package com.tinybank.app.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -61,8 +67,10 @@ public class LoginActivity extends Activity {
 		userName.setOnTouchListener(new View.OnTouchListener() {
 	        @Override
 	        public boolean onTouch(View v, MotionEvent event) {
-	            v.setFocusable(true);
-	            v.setFocusableInTouchMode(true);
+	        	password.setFocusable(true);
+	        	password.setFocusableInTouchMode(true);
+	        	userName.setFocusable(true);
+	        	userName.setFocusableInTouchMode(true);
 	            return false;
 	        }
 	    });
@@ -94,22 +102,46 @@ public class LoginActivity extends Activity {
 		password.setOnTouchListener(new View.OnTouchListener() {
 	        @Override
 	        public boolean onTouch(View v, MotionEvent event) {
-	            v.setFocusable(true);
-	            v.setFocusableInTouchMode(true);
+	        	password.setFocusable(true);
+	        	password.setFocusableInTouchMode(true);
+	        	userName.setFocusable(true);
+	        	userName.setFocusableInTouchMode(true);
 	            return false;
 	        }
 	    });
+		password.setOnEditorActionListener(new OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+		            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		            //Toast.makeText(getApplicationContext(), "login", Toast.LENGTH_SHORT).show();
+		            //Server.login("alik.hochner@gmail.com", "gordon");
+		            Server.login("alik.hochner@gmail.com", "gordon");
+		            return true;  
+		        }
+				return false;
+			}
+		});
 		createAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "createAccount", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "We Only had 24 Hours", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
 	}
 	
 	@Subscribe
-	public void onLogin(LoginEvent event) {
+	public void onLoginFinished(LoginEvent loginEvent) {
+		//Log.e("tinybank", "login success=" + loginEvent.isSuccess());
+		//Log.e("tinybank", "login user=" + loginEvent.getUser());
+		if (loginEvent.isSuccess()) {
+			Toast.makeText(getApplicationContext(), "login =>"+loginEvent.getUser(), Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+		}
+		
 	}
 	
 	@Override
