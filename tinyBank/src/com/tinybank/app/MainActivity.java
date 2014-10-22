@@ -10,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
 import com.tinybank.app.backend.Server;
+import com.tinybank.app.bean.User;
+import com.tinybank.app.event.EventBus;
+import com.tinybank.app.event.LoginEvent;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 
@@ -34,14 +39,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	private Server server;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		EventBus.register(this);
 		Server.connect(getApplicationContext());
+		Server.login("alik.hochner@gmail.com", "gordon");
 		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -76,6 +82,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+	}
+	
+	@Subscribe
+	public void onLoginFinished(LoginEvent loginEvent) {
+		Log.e("tinybank", "login success=" + loginEvent.isSuccess());
+		Log.e("tinybank", "login user=" + loginEvent.getUser());
 	}
 
 	@Override
