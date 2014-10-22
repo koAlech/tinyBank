@@ -1,11 +1,78 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="0dp" >
+    android:padding="0dp" 
+     >
 
-    <TextView
+    
+    <EditText
+        android:id="@+id/userName"
+        android:focusable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="asdf" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/logo"
+        android:layout_marginLeft="57dp"
+        android:layout_marginTop="41dp"
+        android:text="@string/userName"
+        android:textColor="@color/light_gray"
+        android:ems="10" >
+    </EditText>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        android:src="@drawable/logo_reg" >
+    </ImageView>
+
+<!--
+
+android:descendantFocusability="beforeDescendants"
+ 	android:focusableInTouchMode="true"
+ 	
+<requestFocus /> 
+android:textStyle="bold"
+ -->
+
+    <EditText
+        android:id="@+id/password"
+        android:focusable="false"
+        android:imeOptions="flagNoExtractUi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/userName"
+        android:layout_below="@+id/userName"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="textPassword" >
+    </EditText>
+
+    <TextView
+        android:id="@+id/createAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignRight="@+id/userName"
+        android:textColor="@color/blue_logo"
+        android:textSize="12sp"
+        android:text="Create an account" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="44dp"
+        android:layout_toLeftOf="@+id/createAccount"
+        android:paddingRight="10dp"
+        android:text="First time here?"
+        android:textColor="@color/light_gray"
+        android:textSize="10sp">
+        <requestFocus /> 
+    </TextView>
 
 </RelativeLayout>

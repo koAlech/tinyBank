@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    
+    <color name="blue_logo">#ff3cc7f2</color>
+    <color name="light_gray">#ffcccccc</color>
+    
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    
+    <!-- 
+    
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="red">#ffff0000</color>
+    <color name="gray">#ff888888</color>
+    <color name="dark_gray">#ff555555</color>
+    <color name="darker_gray">#ff333333</color>
+    <color name="light_gray">#ffcccccc</color>
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="transparent">#00000000</color>
+    <color name="dumpster_green">#ff00a550</color>
+    
+    <color name="widget_background">#A0303030</color>
+    <color name="widget_text">#ff00a550</color>
+     -->
+    <!-- 
+    <color name="listview">#ffffffff</color>
+    <color name="listview_shadow">#fff5f5f5</color>
+    <color name="shadow_selected">#fff8f8f8</color>
+    <color name="shadow_listview">#fff5f5f5</color>
+    <color name="shadow_listview">#25eeeeee</color>
+     -->
+     <!-- 
+    <color name="shadow_listview">#fff5f5f5</color>
+    <color name="shadow_nativead">#fff3f3f3</color>
+    <color name="shadow_nativead_loading">#bb676767</color>
+      -->
+    
+    <!-- 
+    #ffe8e8e8
+    <color name="shadow">#25000000</color>
+    <color name="title">#ffdddddd</color>
+     -->
+     <!-- 
+    <color name="undo_background">#ee606060</color>
+    <color name="undo_pressed">#ee808080</color>
+    <color name="undo_focused">#ee808080</color>
+    
+    <color name="wizard_title">#a0000000</color>
+    <color name="wizard_text">#80000000</color>
+    <color name="wizard_divider">#10000000</color>
+    
+    <color name="lockscreen_divider">#10000000</color>
+    <color name="lockscreen_title">#a0000000</color>
+    <color name="lockscreen_text">#80000000</color>
+      -->
+
+    <!-- 
+    <color name="preview_item_title">#a0000000</color>
+    <color name="preview_background">#fff8f8f8</color>
+    <color name="preview_background">#fff5f5f5</color>
+     -->
+     <!-- 
+    <color name="preview_item_title">#c0000000</color>
+    <color name="preview_item_text">#80000000</color>
+
+    <color name="window_background">#fff5f5f5</color>
+      -->
+    
+    <!-- 
+    <color name="title">#ffffffff</color>
+    <color name="shadow">#28000000</color>
+    <color name="audio_shadow">#50000000</color>
+     -->
+    
+    <!-- 
+    <color name="list_item_text">#a0000000</color>
+    <color name="list_item_document">#ff34495e</color>
+    <color name="list_item_document_alpha">#3334495e</color>
+    <color name="list_item_document">#ff2e3192</color>
+    <color name="list_item_document_alpha">#332e3192</color>
+    <color name="list_item_file">#ff48627c</color>
+    <color name="list_item_file_alpha">#3348627c</color>
+    <color name="list_item_folder">#ffe74c3c</color>
+    <color name="list_item_folder_alpha">#33e74c3c</color>
+    <color name="list_item_image">#ff2ecc71</color>
+    <color name="list_item_image_alpha">#332ecc71</color>
+    <color name="list_item_audio">#ffae5e9b</color>
+    <color name="list_item_audio_alpha">#33ae5e9b</color>
+    <color name="list_item_video">#ff3498db</color>
+    <color name="list_item_video_alpha">#333498db</color>
+    <color name="list_item_sms">#fff39c12</color>
+    <color name="list_item_sms_alpha">#33f39c12</color>
+    <color name="list_item_native_ad">#ff808285</color>
+    <color name="list_item_native_ad_alpha">#33808285</color>
+    <color name="list_item_app">#ff808285</color>
+    <color name="list_item_app_alpha">#33808285</color>
+     -->
+    
+    
+    <!--
+    <color name="list_item_badge">#ffe74c3c</color>
+    <color name="shadow">#80505050</color>
+    <color name="image_background_gray">#60606060</color> 
+     -->
+    <!-- 
+    <color name="background_preview_image">#ffd6d6d6</color>
+    <color name="background_preview_image_selected">#8033b5e5</color>
+     -->
+    
+    <!--
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="shadow">#60606060</color>
+    <color name="shadow">#ff505050</color>
+    
+    <color name="transparent_dark">#AA000000</color>
+    <color name="lighter_gray">#ddd</color>
+    <color name="darker_gray">#aaa</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="black">#FF000000</color>
+    <color name="dark_gray">#FF000000</color>
+     
+    <color name="background_holo_light">#ffff0000</color>
+    <color name="background_holo_light">#fff3f3f3</color>
+    
+    <color name="pressed_dumpster">#CC33B5E5</color>
+    
+    <color name="md__transparent">#00000000</color>
+    
+    <color name="honeycombish_blue">#FF58BAED</color>
+    <color name="soft_grey">#FF777777</color>
+    <color name="background">#FFEFEFEF</color>
+    
+    <color name="android_green">#FFA4C639</color>
+     -->
+     
+</resources>
