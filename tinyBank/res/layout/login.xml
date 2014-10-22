@@ -67,6 +67,7 @@ android:imeOptions="flagNoExtractUi"
         android:text="@string/userName"
         android:singleLine="true"
         android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
         android:textColor="@color/light_gray" />
 
     <TextView

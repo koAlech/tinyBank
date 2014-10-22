@@ -2,10 +2,10 @@ package com.tinybank.app.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -115,9 +115,8 @@ public class LoginActivity extends Activity {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
 		            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		            //Toast.makeText(getApplicationContext(), "login", Toast.LENGTH_SHORT).show();
-		            //Server.login("alik.hochner@gmail.com", "gordon");
 		            Server.login("alik.hochner@gmail.com", "gordon");
+		            //Server.login(userName.getText().toString(), password.getText().toString());
 		            return true;  
 		        }
 				return false;
@@ -137,8 +136,13 @@ public class LoginActivity extends Activity {
 		//Log.e("tinybank", "login success=" + loginEvent.isSuccess());
 		//Log.e("tinybank", "login user=" + loginEvent.getUser());
 		if (loginEvent.isSuccess()) {
-			Toast.makeText(getApplicationContext(), "login =>"+loginEvent.getUser(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(), "login =>"+loginEvent.getUser(), Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+			startActivity(intent);
 		} else {
+			userName.setText("");
+			password.setText("");
+			userName.requestFocus();
 			Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
 		}
 		
