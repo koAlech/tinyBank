@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.tinybank.app.backend.Server;
 import com.tinybank.app.bean.User;
+import com.tinybank.app.event.BankAccountEvent;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.LoginEvent;
 
@@ -48,6 +49,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 		EventBus.register(this);
 		Server.connect(getApplicationContext());
 		Server.login("alik.hochner@gmail.com", "gordon");
+//		Server.login("shahar.levinshtein@gmail.com", "gordon");
 		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -86,8 +88,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 	
 	@Subscribe
 	public void onLoginFinished(LoginEvent loginEvent) {
-		Log.e("tinybank", "login success=" + loginEvent.isSuccess());
-		Log.e("tinybank", "login user=" + loginEvent.getUser());
+		if (loginEvent.isSuccess()) {
+			Server.getBankAccount(loginEvent.getUser().getUsername());
+		} 
+	}
+	
+	@Subscribe
+	public void onBankAccountLoaded(BankAccountEvent bankAccountEvent) {
+		if (bankAccountEvent.isSuccess()) {
+			Log.e("tinybank", bankAccountEvent.getBank_account_id());
+		} 
 	}
 
 	@Override
