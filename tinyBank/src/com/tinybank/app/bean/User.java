@@ -5,16 +5,14 @@ public class User {
 	private String email;
 	private String first_name;
 	private String last_name;
-	private boolean active;
 	
 	public User(String username, String email, String first_name,
-			String last_name, boolean active) {
+			String last_name) {
 		super();
 		this.username = username;
 		this.email = email;
 		this.first_name = first_name;
 		this.last_name = last_name;
-		this.active = active;
 	}
 	public String getUsername() {
 		return username;
@@ -39,11 +37,5 @@ public class User {
 	}
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
-	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 }

@@ -20,8 +20,7 @@ public class Server {
 		if (context != null) {
 			Server.context = context;
 			try {
-				Built.initializeWithApiKey(context, "blt5d6ff099d763bf99",
-						"tinybank");
+				Built.initializeWithApiKey(context, "blt5d6ff099d763bf99", "tinybank");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -36,25 +35,20 @@ public class Server {
 					@Override
 					public void onSuccess() {
 						// user has logged in successfully
-						// builtUserObject.authtoken contains the session
-						// authtoken
-						String username = (String) builtUserObject.get("username");
-						String email = (String) builtUserObject.get("email");
-						String first_name = (String) builtUserObject.get("first_name");
-						String last_name = (String) builtUserObject.get("last_name");
-						Boolean active = (Boolean) builtUserObject.get("active");
+						// builtUserObject.authtoken contains the session authtoken
+						String username = builtUserObject.getUserName();
+						String email = builtUserObject.getEmailId();
+						String first_name = builtUserObject.getFirstName();
+						String last_name = builtUserObject.getLastName();
 						
-						User user = new User(username, email, first_name, last_name, active);
+						User user = new User(username, email, first_name, last_name);
 						EventBus.postOnMain(context, new LoginEvent(user, true));
 						
 					}
 
 					@Override
 					public void onError(BuiltError builtErrorObject) {
-						// login failed
-						// the message, code and details of the error
-						Log.i("error: ",
-								"" + builtErrorObject.getErrorMessage());
+						Log.i("error: ", "" + builtErrorObject.getErrorMessage());
 						Log.i("error: ", "" + builtErrorObject.getErrorCode());
 						Log.i("error: ", "" + builtErrorObject.getErrors());
 						EventBus.postOnMain(context, new LoginEvent(null, false));
