@@ -78,7 +78,10 @@ android:imeOptions="flagNoExtractUi"
         android:layout_toLeftOf="@+id/createAccount"
         android:text="First time here?"
         android:textColor="@color/light_gray"
-        android:padding="10dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textSize="10sp" />
 
 </RelativeLayout>
