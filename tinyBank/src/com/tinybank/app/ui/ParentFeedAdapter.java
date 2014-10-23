@@ -37,6 +37,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
             viewHolder = new ViewHolder();
             viewHolder.textViewName = (TextView) view.findViewById(R.id.parent_feed_name);
             viewHolder.textViewDesc = (TextView) view.findViewById(R.id.parent_feed_desc);
+            viewHolder.textViewDate = (TextView) view.findViewById(R.id.parent_feed_date);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.parent_feed_imageview);
             view.setTag(viewHolder);
         } else {
@@ -78,16 +79,11 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         	viewHolder.textViewName.setText("Deposit");
         }
         
-        /*
-        NumberFormat numberFormat  = new DecimalFormat("#.00");
-        Double amount = getItem(position).getAmount();
-        if (amount != null) {
-        	String balance = numberFormat.format(getItem(position).getAmount());
-        	viewHolder.textViewBalance.setText("Account balance: $"+balance);
-        } else {
-        	viewHolder.textViewBalance.setText("");
+        String d =  getItem(position).getDate();
+        if (d != null) {
+        	d = d.substring(0, d.indexOf("T"));
         }
-        */
+        viewHolder.textViewDate.setText(d);
         
         setImageView(viewHolder, position);
 
@@ -131,6 +127,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
     private static class ViewHolder {
         TextView textViewName;
         TextView textViewDesc;
+        TextView textViewDate;
         ImageView imageView;
     }
 }
