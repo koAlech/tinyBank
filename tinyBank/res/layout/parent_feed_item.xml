@@ -55,7 +55,7 @@
             <RelativeLayout
 		        android:layout_width="fill_parent"
 		    	android:layout_height="fill_parent"
-		    	android:paddingTop="20dp">
+		    	android:paddingTop="10dp">
 		    	
                 <TextView
 			        android:id="@+id/parent_feed_date"
@@ -69,13 +69,37 @@
 			        tools:ignore="UnusedAttribute" />
                 
                 <ImageView
-			        android:id="@+id/parent_feed_action"
+			        android:id="@+id/parent_feed_action_green"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:paddingTop="10dp"
 			        android:layout_alignParentRight="true"
 			        android:layout_alignParentBottom="true"
 			        android:scaleType="centerCrop"
+			        android:visibility="gone"
 			        android:src="@drawable/more_actions_green"
+			        tools:ignore="ContentDescription" />
+                <ImageView
+			        android:id="@+id/parent_feed_action_red"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_alignParentRight="true"
+			        android:paddingTop="10dp"
+			        android:layout_alignParentBottom="true"
+			        android:scaleType="centerCrop"
+			        android:visibility="gone"
+			        android:src="@drawable/more_actions_red"
+			        tools:ignore="ContentDescription" />
+                <ImageView
+			        android:id="@+id/parent_feed_action_pending"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:paddingTop="10dp"
+			        android:layout_alignParentRight="true"
+			        android:layout_alignParentBottom="true"
+			        android:scaleType="centerCrop"
+			        android:visibility="gone"
+			        android:src="@drawable/pending"
 			        tools:ignore="ContentDescription" />
                 
 	    	</RelativeLayout>

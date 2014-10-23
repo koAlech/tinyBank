@@ -39,6 +39,9 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
             viewHolder.textViewDesc = (TextView) view.findViewById(R.id.parent_feed_desc);
             viewHolder.textViewDate = (TextView) view.findViewById(R.id.parent_feed_date);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.parent_feed_imageview);
+            viewHolder.imageGreen = (ImageView) view.findViewById(R.id.parent_feed_action_green);
+            viewHolder.imageRed = (ImageView) view.findViewById(R.id.parent_feed_action_red);
+            viewHolder.imagePending = (ImageView) view.findViewById(R.id.parent_feed_action_pending);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -46,6 +49,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         
         String type = getItem(position).getType();
         String description = getItem(position).getDescription();
+        String status = getItem(position).getStatus();
         NumberFormat numberFormat  = new DecimalFormat("#.00");
         Double amount = getItem(position).getAmount();
         if ("deposit".equals(type)) {
@@ -85,6 +89,15 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         }
         viewHolder.textViewDate.setText(d);
         
+        if ("approved".equals(status)) {
+        	viewHolder.imageGreen.setVisibility(View.VISIBLE);
+        } else if ("rejected".equals(status)) {
+        	viewHolder.imageRed.setVisibility(View.VISIBLE);
+        } else if ("pending".equals(status)) {
+        	viewHolder.imagePending.setVisibility(View.VISIBLE);
+        } else {
+        	viewHolder.imageGreen.setVisibility(View.VISIBLE);
+        }
         setImageView(viewHolder, position);
 
         return view;
@@ -129,5 +142,8 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         TextView textViewDesc;
         TextView textViewDate;
         ImageView imageView;
+        ImageView imageGreen;
+        ImageView imageRed;
+        ImageView imagePending;
     }
 }
