@@ -25,16 +25,15 @@ import com.tinybank.app.backend.Server;
 import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.TinyAccountsEvent;
-import com.tinybank.app.event.UserFeedsEvent;
 
 public class TinyAccountActivity extends Activity {
 
-	@InjectView(R.id.activity_googlecards_listview) ListView listView;
+	@InjectView(R.id.account_listview) ListView listView;
 	@InjectView(R.id.dashboard_header_name) TextView dashboard_header_name;
 	@InjectView(R.id.dashboard_header_account) TextView dashboard_header_account;
 	@InjectView(R.id.dashboard_header_balance) TextView dashboard_header_balance;
 	
-	private TinyAccountAdapter mGoogleCardsAdapter;
+	private TinyAccountAdapter tinyAccountAdapter;
 	
 	private String bank_account_id;
 	
@@ -56,8 +55,8 @@ public class TinyAccountActivity extends Activity {
 		NumberFormat numberFormat  = new DecimalFormat("#.00");
 		dashboard_header_balance.setText("Balance $" + numberFormat.format(balance));
 		
-		mGoogleCardsAdapter = new TinyAccountAdapter(this);
-		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(mGoogleCardsAdapter);
+		tinyAccountAdapter = new TinyAccountAdapter(this);
+		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(tinyAccountAdapter);
         swingBottomInAnimationAdapter.setAbsListView(listView);
 		swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
         listView.setAdapter(swingBottomInAnimationAdapter);
@@ -65,9 +64,14 @@ public class TinyAccountActivity extends Activity {
         listView.setOnItemClickListener(new OnItemClickListener() {
         	  @Override
         	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        	    Toast.makeText(getApplicationContext(), "Click ListItem Number " + position, Toast.LENGTH_LONG).show();
-        	    String username = mGoogleCardsAdapter.getItem(position).getUsername();
-        	    Server.getUserFeed(username);
+        	    String username = tinyAccountAdapter.getItem(position).getUsername();
+        	    
+        	    Intent intent = new Intent(getApplicationContext(), ParentFeedActivity.class);
+    			intent.putExtra("name", username);
+    			startActivity(intent);
+    			
+        	    //Toast.makeText(getApplicationContext(), "Click ListItem Number " + position + " - " + username, Toast.LENGTH_LONG).show();
+        	    
         	  }
         	}); 
         
@@ -75,25 +79,19 @@ public class TinyAccountActivity extends Activity {
 	}
 	
 	@Subscribe
-	public void onUserFeedsEventFinished(UserFeedsEvent userFeedsEvent) {
-		if (userFeedsEvent.isSuccess()) {
-			Toast.makeText(getApplicationContext(), userFeedsEvent.getFeeds().size(), Toast.LENGTH_LONG).show();
-		}
-	}
-	@Subscribe
 	public void onTinyAccountsEventFinished(TinyAccountsEvent tinyAccountsEvent) {
 		if (tinyAccountsEvent.isSuccess()) {
 			
-			int count = mGoogleCardsAdapter.getCount();
+			int count = tinyAccountAdapter.getCount();
 			for (int i = 0; i < count; i++) {
-	            mGoogleCardsAdapter.remove(mGoogleCardsAdapter.getItem(i));
+				tinyAccountAdapter.remove(tinyAccountAdapter.getItem(i));
 	        }
 			
 			ArrayList<TinyAccount> tinyAccounts = tinyAccountsEvent.getTinyAccounts();
 			
 			for (int i = 0; i < tinyAccounts.size(); i++) {
 				TinyAccount tinyAccount = tinyAccounts.get(i);
-				mGoogleCardsAdapter.add(tinyAccount);
+				tinyAccountAdapter.add(tinyAccount);
 			}
 			
 		}
@@ -102,7 +100,7 @@ public class TinyAccountActivity extends Activity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.dashboard, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 	

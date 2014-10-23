@@ -27,7 +27,6 @@ import com.tinybank.app.bean.User;
 import com.tinybank.app.event.BankAccountEvent;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.LoginEvent;
-import com.tinybank.app.event.TinyAccountsEvent;
 
 public class LoginActivity extends Activity {
 
