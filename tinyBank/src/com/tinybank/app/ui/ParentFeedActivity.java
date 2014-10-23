@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,14 +95,39 @@ public class ParentFeedActivity extends Activity {
         listView.setOnItemClickListener(new OnItemClickListener() {
         	  @Override
         	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        	    String username = parentFeedAdapter.getItem(position).getUsername();
+        	    final String username = parentFeedAdapter.getItem(position).getUsername();
+        	    final String type = parentFeedAdapter.getItem(position).getType();
+        	    final String feedUid = parentFeedAdapter.getItem(position).getUid();
+        	    final Double amount = parentFeedAdapter.getItem(position).getAmount();
         	    
-//        	    Intent intent = new Intent(getApplicationContext(), ParentFeedActivity.class);
-//    			intent.putExtra("name", username);
-//    			startActivity(intent);
-    			
-        	    Toast.makeText(getApplicationContext(), "Click ListItem Number " + position + " - " + username, Toast.LENGTH_LONG).show();
-        	    
+        	    if (!"badge".equals(type)) {
+        	    	AlertDialog alertDialog = new AlertDialog.Builder(ParentFeedActivity.this)
+        	    	.setTitle("Deposit")
+        	    	.setItems(new String[]{"Approve", "Match", "Reject"}, new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								Server.approveDeposit(feedUid, username, amount);
+								break;
+							case 1:
+								Server.approveDeposit(feedUid, username, amount*2);
+								break;	
+							case 2:
+								Server.rejectDeposit(feedUid);
+								break;
+
+							default:
+								break;
+							}
+							dialog.dismiss();
+							
+						}
+        	    	})
+        	    	.create();
+        	    	alertDialog.show();
+        	    }
         	  }
         	}); 
         
