@@ -1,6 +1,9 @@
 package com.tinybank.app.backend;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -14,12 +17,14 @@ import com.raweng.built.BuiltResultCallBack;
 import com.raweng.built.BuiltUser;
 import com.raweng.built.QueryResult;
 import com.raweng.built.QueryResultsCallBack;
+import com.tinybank.app.bean.Feed;
 import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.bean.User;
 import com.tinybank.app.event.BankAccountEvent;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.LoginEvent;
 import com.tinybank.app.event.TinyAccountsEvent;
+import com.tinybank.app.event.UserFeedsEvent;
 
 public class Server {
 
@@ -169,10 +174,11 @@ public class Server {
 
 	    BuiltObject object = new BuiltObject("feed");
 	    object.set("username", username);
-	    object.set("action_date", System.currentTimeMillis());
+	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+	    object.set("action_date", df.format(new Date()));
 	    object.set("action_type", "deposit");
 	    object.set("action_description", description);
-	    object.set("action_amount", amount);
+	    object.set("action_amount", Double.toString(amount));
 	    if (isParent) {
 	    	object.set("action_status", "approved");
 	    } else {
@@ -183,7 +189,7 @@ public class Server {
 		    @Override
 		    public void onSuccess() {
 		    	if (isParent) {
-		    		updateTinyAccount(username, amount);
+		    		addTinyAmount(username, amount);
 		    	}
 		    }
 		    @Override
@@ -199,7 +205,7 @@ public class Server {
 		    }
 	    });
 	}
-	private static void updateTinyAccount(String username, final Double amount) {
+	private static void addTinyAmount(String username, final Double amount) {
 		
 		BuiltQuery query = new BuiltQuery("tiny_account");
 		query.where("username", username);
@@ -216,7 +222,32 @@ public class Server {
 					balance = Double.valueOf((Integer)tinyAccount.get("bank_account_balance"));
 				}
 				balance += amount;
-				tinyAccount.set("bank_account_balance", balance);
+				
+				// setUid will identify the object, and calling save will update it
+				BuiltObject object = new BuiltObject("tiny_account");
+				object.setUid(tinyAccount.getUid());
+				object.set("bank_account_balance", Double.toString(balance));
+				object.save(new BuiltResultCallBack() {
+					@Override
+					public void onSuccess() {
+						Log.e("tinybank", "success");
+					}
+					@Override
+					public void onError(BuiltError builtErrorObject) {
+						Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+						Log.e("error: ", "" + builtErrorObject.getErrorCode());
+						Log.e("error: ", "" + builtErrorObject.getErrors());
+						// there was an error in updating the object
+						// builtErrorObject will contain more details
+					}
+					@Override
+					public void onAlways() {
+						// write code here that you want to execute
+						// regardless of success or failure of the operation
+					}
+				});
+				
+				tinyAccount.set("bank_account_balance", Double.toString(balance));
 				
 				tinyAccount.save(new BuiltResultCallBack() {
 					@Override
@@ -249,6 +280,97 @@ public class Server {
 			@Override
 			public void onAlways() {
 			}
+		});
+	}
+	public static void approveDeposit(String depositUid, final String username, final Double amount) {
+		BuiltObject object = new BuiltObject("feed");
+		object.setUid(depositUid);
+		object.set("action_status", "approved");
+		object.save(new BuiltResultCallBack() {
+			@Override
+			public void onSuccess() {
+				addTinyAmount(username, amount);
+			}
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.e("error: ", "" + builtErrorObject.getErrorCode());
+				Log.e("error: ", "" + builtErrorObject.getErrors());
+				// there was an error in updating the object
+				// builtErrorObject will contain more details
+			}
+			@Override
+			public void onAlways() {
+				// write code here that you want to execute
+				// regardless of success or failure of the operation
+			}
+		});
+	}
+	public static void rejectDeposit(String depositUid) {
+		BuiltObject object = new BuiltObject("feed");
+		object.setUid(depositUid);
+		object.set("action_status", "rejected");
+		object.save(new BuiltResultCallBack() {
+			@Override
+			public void onSuccess() {
+			}
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.e("error: ", "" + builtErrorObject.getErrorCode());
+				Log.e("error: ", "" + builtErrorObject.getErrors());
+			}
+			@Override
+			public void onAlways() {
+				// write code here that you want to execute
+				// regardless of success or failure of the operation
+			}
+		});
+	}
+	public static void getUserFeed(final String username) {
+		BuiltQuery query = new BuiltQuery("feed");
+		query.where("username", username);
+		query.descending("action_date");
+		
+		query.exec(new QueryResultsCallBack() {
+
+			@Override
+			public void onSuccess(QueryResult queryResultObject) {
+				List<BuiltObject> objects = queryResultObject.getResultObjects();
+				ArrayList<Feed> userFeeds = new ArrayList<Feed>();
+				
+				for (Object object : objects) {
+					
+					BuiltObject feed = (BuiltObject) object;
+					String uid = feed.getUid();
+					String username = (String)feed.get("username");
+					String date = (String)feed.get("action_date");
+					String type = (String)feed.get("action_type");
+					String description = (String)feed.get("action_description");
+					String status = (String)feed.get("action_status");
+					Double amount = null;
+					try {
+						amount = (Double)feed.get("action_amount");
+					} catch (ClassCastException e) {
+						amount = Double.valueOf((Integer)feed.get("action_amount"));
+					}
+					userFeeds.add(new Feed(uid, username, date, type, description, amount, status));
+				}
+				EventBus.postOnMain(context, new UserFeedsEvent(true, userFeeds));
+			}
+			
+			@Override
+			public void onAlways() {
+			}
+
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.e("error: ", "" + builtErrorObject.getErrorCode());
+				Log.e("error: ", "" + builtErrorObject.getErrors());
+			}
+
+			
 		});
 	}
 }
