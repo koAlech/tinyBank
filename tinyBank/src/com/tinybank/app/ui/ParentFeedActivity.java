@@ -22,7 +22,6 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.squareup.otto.Subscribe;
 import com.tinybank.app.R;
@@ -37,6 +36,8 @@ public class ParentFeedActivity extends Activity {
 	@InjectView(R.id.accountImageView) ImageView accountImageView;
 	@InjectView(R.id.feed_header_balance) TextView feed_header_balance;
 	@InjectView(R.id.feed_header_goal) TextView feed_header_goal;
+	
+	//@InjectView(R.id.button_floating_action) FloatingActionButton button_floating_action;
 	
 	private ParentFeedAdapter parentFeedAdapter;
 	
@@ -73,11 +74,23 @@ public class ParentFeedActivity extends Activity {
 		
 		//TODO goals
 		
+		//ListView floatingListView = (ListView) findViewById(R.id.feed_listview);
+        //FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.button_floating_action);
+        //floatingActionButton.attachToListView(floatingListView);
+		//button_floating_action.attachToListView(listView);
+
+		//FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		//listView.setOnTouchListener(new ShowHideOnScroll(fab));
+
+		
 		parentFeedAdapter = new ParentFeedAdapter(this);
+		
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(parentFeedAdapter);
         swingBottomInAnimationAdapter.setAbsListView(listView);
 		swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
         listView.setAdapter(swingBottomInAnimationAdapter);
+        
+		//listView.setAdapter(parentFeedAdapter);
         
         listView.setOnItemClickListener(new OnItemClickListener() {
         	  @Override
@@ -118,8 +131,6 @@ public class ParentFeedActivity extends Activity {
         	  }
         	}); 
         
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.button_floating_action);
-        floatingActionButton.attachToListView(listView);
         
 		Server.getUserFeed(name);
 	}
