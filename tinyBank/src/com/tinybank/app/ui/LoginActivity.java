@@ -127,8 +127,9 @@ public class LoginActivity extends Activity {
 					spinner.setVisibility(View.VISIBLE);
 		            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		            Server.login("shira@tinybank.com", "gordon");
-		            //Server.login(userName.getText().toString(), password.getText().toString());
+//		            Server.login("shira@tinybank.com", "gordon");
+//		            Server.login("roni@gmail.com", "gordon");
+		            Server.login(userName.getText().toString(), password.getText().toString());
 		            return true;  
 		        }
 				return false;
