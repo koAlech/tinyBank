@@ -65,9 +65,10 @@ public class TinyAccountActivity extends Activity {
         	  @Override
         	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         	    String username = tinyAccountAdapter.getItem(position).getUsername();
-        	    
+        	    Double balance = tinyAccountAdapter.getItem(position).getBalance();
         	    Intent intent = new Intent(getApplicationContext(), ParentFeedActivity.class);
     			intent.putExtra("name", username);
+    			intent.putExtra("balance", balance);
     			startActivity(intent);
     			
         	    //Toast.makeText(getApplicationContext(), "Click ListItem Number " + position + " - " + username, Toast.LENGTH_LONG).show();

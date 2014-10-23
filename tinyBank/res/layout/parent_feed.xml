@@ -8,53 +8,58 @@
     <RelativeLayout
         android:id="@+id/feed_header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="96dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/container_dropshadow" >
 
         <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/parent_avatar" >
+            android:id="@+id/accountImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="0dp"
+            android:scaleType="centerInside" >
+
         </ImageView>
-
-        <TextView
-            android:id="@+id/feed_header_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imageView1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:padding="0dp"
-            android:text="Good morning Shira"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/feed_header_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/feed_header_name"
-            android:layout_below="@+id/feed_header_name"
-            android:layout_alignParentRight="true"
-            android:padding="0dp"
-            android:text="Account# 21222111 @ Leumi Bank"
-            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/feed_header_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageView1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="0dp"
+            android:textColor="@color/white"
+            android:text="Good morning Shira"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/feed_header_goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/feed_header_name"
+            android:layout_below="@+id/feed_header_name"
+            android:layout_alignParentLeft="true"
+            android:padding="0dp"
+            android:textColor="@color/white"
+            android:text="Account# 21222111 @ Leumi Bank"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/feed_header_trend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/feed_header_account"
             android:layout_below="@+id/feed_header_account"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginBottom="10dp"
             android:padding="0dp"
+            android:textColor="@color/white"
             android:text="balance $12,123"
             android:textSize="12sp" />
 

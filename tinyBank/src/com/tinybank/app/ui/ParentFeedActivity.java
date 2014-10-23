@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import butterknife.ButterKnife;
@@ -26,6 +28,10 @@ import com.tinybank.app.event.UserFeedsEvent;
 public class ParentFeedActivity extends Activity {
 	
 	@InjectView(R.id.feed_listview) ListView listView;
+	@InjectView(R.id.accountImageView) ImageView accountImageView;
+	@InjectView(R.id.feed_header_balance) TextView feed_header_balance;
+	@InjectView(R.id.feed_header_goal) TextView feed_header_goal;
+	@InjectView(R.id.feed_header_trend) TextView feed_header_trend;
 	
 	private ParentFeedAdapter parentFeedAdapter;
 	
@@ -41,10 +47,23 @@ public class ParentFeedActivity extends Activity {
 		
 		Intent intent = getIntent();
 		String name = intent.getStringExtra("name");
-		
 		setTitle(name);
 		
 		//TODO
+		if ("Amitai".equals(name)) {
+			accountImageView.setImageResource(R.drawable.user_amitai);
+        } else if ("ET".equals(name)) {
+        	accountImageView.setImageResource(R.drawable.user_et);
+        } else if ("Yaniv".equals(name)) {
+        	accountImageView.setImageResource(R.drawable.user_yaniv);
+        } else if ("Roni".equals(name)) {
+        	accountImageView.setImageResource(R.drawable.user_roni);
+        } else {
+        	accountImageView.setImageResource(R.drawable.user_amitai);
+        }
+		
+		double balance = intent.getDoubleExtra("balance", 0);
+		feed_header_balance.setText("balance"+balance);
 		
 		parentFeedAdapter = new ParentFeedAdapter(this);
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(parentFeedAdapter);
