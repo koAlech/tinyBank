@@ -68,6 +68,8 @@ public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
         String username = getItem(position).getUsername();
         if ("Amitai".equals(username)) {
         	imageResId = R.drawable.user_amitai;
+        } else if ("et".equals(username)) {
+        	imageResId = R.drawable.user_et;
         } else if ("Yaniv".equals(username)) {
         	imageResId = R.drawable.user_yaniv;
         } else if ("Roni".equals(username)) {
