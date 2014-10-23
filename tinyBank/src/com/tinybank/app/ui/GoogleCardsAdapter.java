@@ -16,6 +16,9 @@ package com.tinybank.app.ui;
  * limitations under the License.
  */
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,7 +59,9 @@ public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
             viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.textViewName.setText(getItem(position).getUsername());
-        viewHolder.textViewBalance.setText("Account balance: $"+getItem(position).getBalance());
+        NumberFormat numberFormat  = new DecimalFormat("#.00");
+        String balance = numberFormat.format(getItem(position).getBalance());
+        viewHolder.textViewBalance.setText("Account balance: $"+balance);
         setImageView(viewHolder, position);
 
         return view;
