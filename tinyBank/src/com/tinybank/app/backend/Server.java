@@ -370,7 +370,7 @@ public class Server {
 					String type = (String)feed.get("action_type");
 					String description = (String)feed.get("action_description");
 					String status = (String)feed.get("action_status");
-					boolean liked = (boolean)feed.get("is_liked");
+					Boolean liked = (Boolean)feed.get("is_liked");
 					Double amount = null;
 					try {
 						amount = (Double)feed.get("action_amount");
