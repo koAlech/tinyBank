@@ -47,17 +47,16 @@ public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
         View view = convertView;
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.tiny_account, parent, false);
-
             viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) view.findViewById(R.id.activity_googlecards_card_textview);
+            viewHolder.textViewName = (TextView) view.findViewById(R.id.dashboard_account_name);
+            viewHolder.textViewBalance = (TextView) view.findViewById(R.id.dashboard_account_balance);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.dashboard_account_imageview);
             view.setTag(viewHolder);
-
-            viewHolder.imageView = (ImageView) view.findViewById(R.id.activity_googlecards_card_imageview);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-
-        viewHolder.textView.setText(getItem(position).getUsername());
+        viewHolder.textViewName.setText(getItem(position).getUsername());
+        viewHolder.textViewBalance.setText("Account balance: $"+getItem(position).getBalance());
         setImageView(viewHolder, position);
 
         return view;
@@ -68,7 +67,7 @@ public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
         String username = getItem(position).getUsername();
         if ("Amitai".equals(username)) {
         	imageResId = R.drawable.user_amitai;
-        } else if ("et".equals(username)) {
+        } else if ("ET".equals(username)) {
         	imageResId = R.drawable.user_et;
         } else if ("Yaniv".equals(username)) {
         	imageResId = R.drawable.user_yaniv;
@@ -112,7 +111,8 @@ public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
 
     @SuppressWarnings({"PackageVisibleField", "InstanceVariableNamingConvention"})
     private static class ViewHolder {
-        TextView textView;
+        TextView textViewName;
+        TextView textViewBalance;
         ImageView imageView;
     }
 }
