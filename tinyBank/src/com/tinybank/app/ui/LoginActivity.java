@@ -153,6 +153,7 @@ public class LoginActivity extends Activity {
 			intent.putExtra("bank_name", bank_name);
 			intent.putExtra("bank_account_id", bank_account_id);
 			startActivity(intent);
+			finish();
 		}
 	}
 	
