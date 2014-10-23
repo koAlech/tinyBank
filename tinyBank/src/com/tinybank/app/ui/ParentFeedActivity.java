@@ -33,7 +33,6 @@ public class ParentFeedActivity extends Activity {
 	@InjectView(R.id.accountImageView) ImageView accountImageView;
 	@InjectView(R.id.feed_header_balance) TextView feed_header_balance;
 	@InjectView(R.id.feed_header_goal) TextView feed_header_goal;
-	@InjectView(R.id.feed_header_trend) TextView feed_header_trend;
 	
 	private ParentFeedAdapter parentFeedAdapter;
 	
@@ -51,22 +50,24 @@ public class ParentFeedActivity extends Activity {
 		String name = intent.getStringExtra("name");
 		setTitle(name);
 		
-		//TODO
+		
 		if ("Amitai".equals(name)) {
-			accountImageView.setImageResource(R.drawable.user_amitai);
+			accountImageView.setImageResource(R.drawable.user_amitai);//TODO
         } else if ("ET".equals(name)) {
-        	accountImageView.setImageResource(R.drawable.user_et);
+        	accountImageView.setImageResource(R.drawable.user_et);//TODO
         } else if ("Yaniv".equals(name)) {
-        	accountImageView.setImageResource(R.drawable.user_yaniv);
+        	accountImageView.setImageResource(R.drawable.user_yaniv);//TODO
         } else if ("Roni".equals(name)) {
         	accountImageView.setImageResource(R.drawable.roni_profile_image);
         } else {
-        	accountImageView.setImageResource(R.drawable.user_amitai);
+        	accountImageView.setImageResource(R.drawable.user_amitai);//TODO
         }
 		
 		double balance = intent.getDoubleExtra("balance", 0);
 		NumberFormat numberFormat  = new DecimalFormat("#.00");
 		feed_header_balance.setText("$" + numberFormat.format(balance));
+		
+		//TODO goals
 		
 		parentFeedAdapter = new ParentFeedAdapter(this);
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(parentFeedAdapter);
@@ -87,7 +88,8 @@ public class ParentFeedActivity extends Activity {
         	    
         	  }
         	}); 
-		Server.getUserFeed(name);
+        
+			Server.getUserFeed(name);
 	}
 	
 	@Subscribe

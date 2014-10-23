@@ -23,7 +23,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
     private final BitmapCache mMemoryCache;
 
     public ParentFeedAdapter(Context context) {
-		super(context, R.layout.tiny_account_item);
+		super(context, R.layout.parent_feed_item);
 		mContext = context;
         mMemoryCache = new BitmapCache();
 	}
@@ -33,16 +33,52 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         ViewHolder viewHolder;
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.tiny_account_item, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.parent_feed_item, parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.textViewName = (TextView) view.findViewById(R.id.dashboard_account_name);
-            viewHolder.textViewBalance = (TextView) view.findViewById(R.id.dashboard_account_balance);
-            viewHolder.imageView = (ImageView) view.findViewById(R.id.dashboard_account_imageview);
+            viewHolder.textViewName = (TextView) view.findViewById(R.id.parent_feed_name);
+            viewHolder.textViewDesc = (TextView) view.findViewById(R.id.parent_feed_desc);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.parent_feed_imageview);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.textViewName.setText(getItem(position).getUsername());
+        
+        String type = getItem(position).getType();
+        String description = getItem(position).getDescription();
+        NumberFormat numberFormat  = new DecimalFormat("#.00");
+        Double amount = getItem(position).getAmount();
+        if ("deposit".equals(type)) {
+        	viewHolder.textViewName.setText("Deposit");
+        	if (amount != null) {
+            	String balance = numberFormat.format(getItem(position).getAmount());
+            	viewHolder.textViewDesc.setText("$"+balance+" - "+description);
+            } else {
+            	viewHolder.textViewDesc.setText("");
+            }
+        } else if ("withdrawal".equals(type)) {
+        	viewHolder.textViewName.setText("Withdrawal");
+        	if (amount != null) {
+            	String balance = numberFormat.format(getItem(position).getAmount());
+            	viewHolder.textViewDesc.setText("$"+balance+" - "+description);
+            } else {
+            	viewHolder.textViewDesc.setText("");
+            }
+        } else if ("badge".equals(type)) {
+        	viewHolder.textViewName.setText("Badge Earned");
+        	viewHolder.textViewDesc.setText(description);
+        } else if ("goal_updated".equals(type)) {
+        	viewHolder.textViewName.setText("Goal Updated");
+        	if (amount != null) {
+            	String balance = numberFormat.format(getItem(position).getAmount());
+            	viewHolder.textViewDesc.setText("Added $"+balance+" - "+description);
+            } else {
+            	viewHolder.textViewDesc.setText("");
+            }
+        } else {
+        	viewHolder.textViewName.setText("Deposit");
+        }
+        
+        /*
         NumberFormat numberFormat  = new DecimalFormat("#.00");
         Double amount = getItem(position).getAmount();
         if (amount != null) {
@@ -51,6 +87,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         } else {
         	viewHolder.textViewBalance.setText("");
         }
+        */
         
         setImageView(viewHolder, position);
 
@@ -59,17 +96,17 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
 
     private void setImageView(final ViewHolder viewHolder, final int position) {
         int imageResId;
-        String username = getItem(position).getUsername();
-        if ("Amitai".equals(username)) {
-        	imageResId = R.drawable.user_amitai;
-        } else if ("ET".equals(username)) {
-        	imageResId = R.drawable.user_et;
-        } else if ("Yaniv".equals(username)) {
-        	imageResId = R.drawable.user_yaniv;
-        } else if ("Roni".equals(username)) {
-        	imageResId = R.drawable.user_roni;
+        String type = getItem(position).getType();
+        if ("deposit".equals(type)) {
+        	imageResId = R.drawable.coin_card_gold;
+        } else if ("withdrawal".equals(type)) {
+        	imageResId = R.drawable.coin_card_red;
+        } else if ("badge".equals(type)) {
+        	imageResId = R.drawable.badge_card;
+        } else if ("goal_updated".equals(type)) {
+        	imageResId = R.drawable.rocket_card;
         } else {
-        	imageResId = R.drawable.user_amitai;
+        	imageResId = R.drawable.coin_card_gold;
         }
         
         Bitmap bitmap = getBitmapFromMemCache(imageResId);
@@ -93,7 +130,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
     @SuppressWarnings({"PackageVisibleField", "InstanceVariableNamingConvention"})
     private static class ViewHolder {
         TextView textViewName;
-        TextView textViewBalance;
+        TextView textViewDesc;
         ImageView imageView;
     }
 }
