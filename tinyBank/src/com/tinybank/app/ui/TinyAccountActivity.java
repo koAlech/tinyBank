@@ -76,7 +76,7 @@ public class TinyAccountActivity extends Activity {
         	  }
         	}); 
         
-        Server.getTinyAccounts(bank_account_id);
+        //Server.getTinyAccounts(bank_account_id);
 	}
 	
 	@Subscribe
@@ -98,6 +98,11 @@ public class TinyAccountActivity extends Activity {
 		}
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Server.getTinyAccounts(bank_account_id);
+	};
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
