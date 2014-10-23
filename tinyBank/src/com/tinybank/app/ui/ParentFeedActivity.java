@@ -11,14 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.squareup.otto.Subscribe;
 import com.tinybank.app.R;
@@ -89,7 +90,10 @@ public class ParentFeedActivity extends Activity {
         	  }
         	}); 
         
-			Server.getUserFeed(name);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.button_floating_action);
+        floatingActionButton.attachToListView(listView);
+        
+		Server.getUserFeed(name);
 	}
 	
 	@Subscribe
