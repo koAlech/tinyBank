@@ -1,5 +1,7 @@
 package com.tinybank.app.ui;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -46,8 +48,9 @@ public class DashboardActivity extends Activity {
 		bank_account_id = intent.getStringExtra("bank_account_id");
 		
 		dashboard_header_name.setText("Good morning " + name);
-		dashboard_header_account.setText("Account# "+bank_account_id+" @ " + bank_name);
-		dashboard_header_balance.setText("Balance $" + String.valueOf(balance));
+		dashboard_header_account.setText("Account #"+bank_account_id+" @ " + bank_name);
+		NumberFormat numberFormat  = new DecimalFormat("#.00");
+		dashboard_header_balance.setText("Balance $" + numberFormat.format(balance));
 		
 		mGoogleCardsAdapter = new GoogleCardsAdapter(this);
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(mGoogleCardsAdapter);
