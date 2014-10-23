@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ import com.tinybank.app.backend.Server;
 import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.TinyAccountsEvent;
+import com.tinybank.app.event.UserFeedsEvent;
 
 public class TinyAccountActivity extends Activity {
 
@@ -58,9 +62,24 @@ public class TinyAccountActivity extends Activity {
 		swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
         listView.setAdapter(swingBottomInAnimationAdapter);
         
+        listView.setOnItemClickListener(new OnItemClickListener() {
+        	  @Override
+        	  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        	    Toast.makeText(getApplicationContext(), "Click ListItem Number " + position, Toast.LENGTH_LONG).show();
+        	    String username = mGoogleCardsAdapter.getItem(position).getUsername();
+        	    Server.getUserFeed(username);
+        	  }
+        	}); 
+        
         Server.getTinyAccounts(bank_account_id);
 	}
 	
+	@Subscribe
+	public void onUserFeedsEventFinished(UserFeedsEvent userFeedsEvent) {
+		if (userFeedsEvent.isSuccess()) {
+			Toast.makeText(getApplicationContext(), userFeedsEvent.getFeeds().size(), Toast.LENGTH_LONG).show();
+		}
+	}
 	@Subscribe
 	public void onTinyAccountsEventFinished(TinyAccountsEvent tinyAccountsEvent) {
 		if (tinyAccountsEvent.isSuccess()) {
