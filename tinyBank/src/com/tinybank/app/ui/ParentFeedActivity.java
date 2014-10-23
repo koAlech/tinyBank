@@ -28,6 +28,7 @@ import com.tinybank.app.R;
 import com.tinybank.app.backend.Server;
 import com.tinybank.app.bean.Feed;
 import com.tinybank.app.event.EventBus;
+import com.tinybank.app.event.FeedUpdateEvent;
 import com.tinybank.app.event.UserFeedsEvent;
 
 public class ParentFeedActivity extends Activity {
@@ -40,6 +41,8 @@ public class ParentFeedActivity extends Activity {
 	//@InjectView(R.id.button_floating_action) FloatingActionButton button_floating_action;
 	
 	private ParentFeedAdapter parentFeedAdapter;
+	private double balance;
+	private String name;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class ParentFeedActivity extends Activity {
 		ButterKnife.inject(this);
 		
 		Intent intent = getIntent();
-		String name = intent.getStringExtra("name");
+		name = intent.getStringExtra("name");
 		setTitle(name);
 		
 		
@@ -68,7 +71,7 @@ public class ParentFeedActivity extends Activity {
         	accountImageView.setImageResource(R.drawable.user_amitai);//TODO
         }
 		
-		double balance = intent.getDoubleExtra("balance", 0);
+		balance = intent.getDoubleExtra("balance", 0);
 		NumberFormat numberFormat  = new DecimalFormat("#.00");
 		feed_header_balance.setText("$" + numberFormat.format(balance));
 		
@@ -115,7 +118,7 @@ public class ParentFeedActivity extends Activity {
 								Server.approveDeposit(feedUid, username, amount*2);
 								break;	
 							case 2:
-								Server.rejectDeposit(feedUid);
+								Server.rejectDeposit(feedUid, username, amount);
 								break;
 
 							default:
@@ -134,15 +137,27 @@ public class ParentFeedActivity extends Activity {
         
 		Server.getUserFeed(name);
 	}
+	@Subscribe
+	public void onFeedUpdate(FeedUpdateEvent event) {
+		Toast.makeText(getApplicationContext(), "Update successful", Toast.LENGTH_SHORT).show();
+		balance+=event.getAmount();
+		NumberFormat numberFormat  = new DecimalFormat("#.00");
+		feed_header_balance.setText("$" + numberFormat.format(balance));
+		
+		parentFeedAdapter.clear();
+		parentFeedAdapter.notifyDataSetChanged();
+		Server.getUserFeed(name);
+	}
 	
 	@Subscribe
 	public void onUserFeedsEventFinished(UserFeedsEvent userFeedsEvent) {
 		if (userFeedsEvent.isSuccess()) {
 			//Toast.makeText(getApplicationContext(), userFeedsEvent.getFeeds().size(), Toast.LENGTH_LONG).show();
-			int count = parentFeedAdapter.getCount();
-			for (int i = 0; i < count; i++) {
-				parentFeedAdapter.remove(parentFeedAdapter.getItem(i));
-	        }
+//			int count = parentFeedAdapter.getCount();
+//			for (int i = 0; i < count; i++) {
+//				parentFeedAdapter.remove(parentFeedAdapter.getItem(i));
+//	        }
+			parentFeedAdapter.clear();
 			
 			ArrayList<Feed> feeds = userFeedsEvent.getFeeds();
 			
@@ -150,6 +165,8 @@ public class ParentFeedActivity extends Activity {
 				Feed feed = feeds.get(i);
 				parentFeedAdapter.add(feed);
 			}
+			
+			parentFeedAdapter.notifyDataSetChanged();
 		} 
 	}
 	

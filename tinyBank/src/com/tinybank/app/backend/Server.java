@@ -25,6 +25,7 @@ import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.bean.User;
 import com.tinybank.app.event.BankAccountEvent;
 import com.tinybank.app.event.EventBus;
+import com.tinybank.app.event.FeedUpdateEvent;
 import com.tinybank.app.event.LoginEvent;
 import com.tinybank.app.event.TinyAccountsEvent;
 import com.tinybank.app.event.UserFeedsEvent;
@@ -297,10 +298,12 @@ public class Server {
 		BuiltObject object = new BuiltObject("feed");
 		object.setUid(depositUid);
 		object.set("action_status", "approved");
+		object.set("action_amount", Double.toString(amount));
 		object.save(new BuiltResultCallBack() {
 			@Override
 			public void onSuccess() {
 				addTinyAmount(username, amount);
+				EventBus.postOnMain(context, new FeedUpdateEvent(amount, true));
 			}
 			@Override
 			public void onError(BuiltError builtErrorObject) {
@@ -317,13 +320,15 @@ public class Server {
 			}
 		});
 	}
-	public static void rejectDeposit(String depositUid) {
+	public static void rejectDeposit(String depositUid, final String username, final double amount) {
 		BuiltObject object = new BuiltObject("feed");
 		object.setUid(depositUid);
 		object.set("action_status", "rejected");
 		object.save(new BuiltResultCallBack() {
 			@Override
 			public void onSuccess() {
+				addTinyAmount(username, -amount);
+				EventBus.postOnMain(context, new FeedUpdateEvent(-amount, true));
 			}
 			@Override
 			public void onError(BuiltError builtErrorObject) {
