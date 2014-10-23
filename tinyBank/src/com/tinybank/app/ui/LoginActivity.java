@@ -23,8 +23,11 @@ import butterknife.InjectView;
 import com.squareup.otto.Subscribe;
 import com.tinybank.app.R;
 import com.tinybank.app.backend.Server;
+import com.tinybank.app.bean.User;
+import com.tinybank.app.event.BankAccountEvent;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.LoginEvent;
+import com.tinybank.app.event.TinyAccountsEvent;
 
 public class LoginActivity extends Activity {
 
@@ -32,6 +35,13 @@ public class LoginActivity extends Activity {
 	@InjectView(R.id.userName) EditText userName;
 	@InjectView(R.id.password) EditText password;
 	@InjectView(R.id.createAccount) TextView createAccount;
+	
+	//private User user = null;
+	
+	private String name = null;
+	private Double balance = null;
+	private String bank_name = null;
+	private String bank_account_id = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +125,7 @@ public class LoginActivity extends Activity {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
 		            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		            Server.login("alik.hochner@gmail.com", "gordon");
+		            Server.login("shira@tinybank.com", "gordon");
 		            //Server.login(userName.getText().toString(), password.getText().toString());
 		            return true;  
 		        }
@@ -132,13 +142,34 @@ public class LoginActivity extends Activity {
 	}
 	
 	@Subscribe
+	public void onBankAccountFinished(BankAccountEvent bankAccountEvent) {
+		if (bankAccountEvent.isSuccess()) {
+			balance = bankAccountEvent.getBalance();
+			bank_name = bankAccountEvent.getBank_name();
+			bank_account_id = bankAccountEvent.getBank_account_id();
+			Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+			intent.putExtra("name", name);
+			intent.putExtra("balance", balance);
+			intent.putExtra("bank_name", bank_name);
+			intent.putExtra("bank_account_id", bank_account_id);
+			startActivity(intent);
+		}
+	}
+	
+	@Subscribe
 	public void onLoginFinished(LoginEvent loginEvent) {
 		//Log.e("tinybank", "login success=" + loginEvent.isSuccess());
 		//Log.e("tinybank", "login user=" + loginEvent.getUser());
 		if (loginEvent.isSuccess()) {
+			User user = loginEvent.getUser();
+			if (user.getParent()) {
+				name = user.getFirst_name();
+				Server.getBankAccount(user.getUsername());
+			} else {
+				//TODO kid dashboard
+			}
 			//Toast.makeText(getApplicationContext(), "login =>"+loginEvent.getUser(), Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-			startActivity(intent);
+			
 		} else {
 			userName.setText("");
 			password.setText("");

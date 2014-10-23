@@ -34,8 +34,8 @@
         
         <activity
             android:name="com.tinybank.app.ui.DashboardActivity"
-            android:label="@string/dashboard"
-            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name"
+            android:icon="@drawable/logo_actionbar"
             android:screenOrientation="portrait">
         </activity>
         
