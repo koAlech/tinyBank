@@ -91,12 +91,20 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         
         if ("approved".equals(status)) {
         	viewHolder.imageGreen.setVisibility(View.VISIBLE);
+        	viewHolder.imageRed.setVisibility(View.INVISIBLE);
+        	viewHolder.imagePending.setVisibility(View.INVISIBLE);
         } else if ("rejected".equals(status)) {
+        	viewHolder.imageGreen.setVisibility(View.INVISIBLE);
         	viewHolder.imageRed.setVisibility(View.VISIBLE);
+        	viewHolder.imagePending.setVisibility(View.INVISIBLE);
         } else if ("pending".equals(status)) {
+        	viewHolder.imageGreen.setVisibility(View.INVISIBLE);
+        	viewHolder.imageRed.setVisibility(View.INVISIBLE);
         	viewHolder.imagePending.setVisibility(View.VISIBLE);
         } else {
         	viewHolder.imageGreen.setVisibility(View.VISIBLE);
+        	viewHolder.imageRed.setVisibility(View.INVISIBLE);
+        	viewHolder.imagePending.setVisibility(View.INVISIBLE);
         }
         setImageView(viewHolder, position);
 

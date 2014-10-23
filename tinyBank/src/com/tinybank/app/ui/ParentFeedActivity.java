@@ -102,6 +102,7 @@ public class ParentFeedActivity extends Activity {
         	    final String type = parentFeedAdapter.getItem(position).getType();
         	    final String feedUid = parentFeedAdapter.getItem(position).getUid();
         	    final Double amount = parentFeedAdapter.getItem(position).getAmount();
+        	    final String status = parentFeedAdapter.getItem(position).getStatus();
         	    
         	    if (!"badge".equals(type)) {
         	    	AlertDialog alertDialog = new AlertDialog.Builder(ParentFeedActivity.this)
@@ -112,13 +113,19 @@ public class ParentFeedActivity extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							switch (which) {
 							case 0:
-								Server.approveDeposit(feedUid, username, amount);
+								if (!"approved".equals(status)) {
+									Server.approveDeposit(feedUid, username, amount);
+								}
 								break;
 							case 1:
-								Server.approveDeposit(feedUid, username, amount*2);
+								if (!"approved".equals(status)) {
+									Server.approveDeposit(feedUid, username, amount*2);
+								}
 								break;	
 							case 2:
-								Server.rejectDeposit(feedUid, username, amount);
+								if (!"rejected".equals(status)) {
+									Server.rejectDeposit(feedUid, username, amount);
+								}
 								break;
 
 							default:
