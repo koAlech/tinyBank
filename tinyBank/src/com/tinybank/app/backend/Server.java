@@ -59,7 +59,7 @@ public class Server {
 						Log.e("tinybank", builtUserObject.toJSON().toString());
 						//TODO REMOVE
 						if (type == null) {
-							if (username.equals("alechko")) {
+							if (username.equals("shira")) {
 								type = "parent";
 							} else {
 								type = "tiny";
