@@ -132,6 +132,7 @@ public class Server {
 		
 		BuiltQuery query = new BuiltQuery("tiny_account");
 		query.where("bank_account_id", bank_account_id);
+		query.ascending("order");
 		
 		query.exec(new QueryResultsCallBack() {
 			
@@ -327,6 +328,27 @@ public class Server {
 			}
 		});
 	}
+	public static void toggleFeedLike(String uid, boolean liked) {
+		BuiltObject object = new BuiltObject("feed");
+		object.setUid(uid);
+		object.set("is_liked", liked);
+		object.save(new BuiltResultCallBack() {
+			@Override
+			public void onSuccess() {
+			}
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.e("error: ", "" + builtErrorObject.getErrorCode());
+				Log.e("error: ", "" + builtErrorObject.getErrors());
+			}
+			@Override
+			public void onAlways() {
+				// write code here that you want to execute
+				// regardless of success or failure of the operation
+			}
+		});
+	}
 	public static void getUserFeed(final String username) {
 		BuiltQuery query = new BuiltQuery("feed");
 		query.where("username", username);
@@ -348,13 +370,14 @@ public class Server {
 					String type = (String)feed.get("action_type");
 					String description = (String)feed.get("action_description");
 					String status = (String)feed.get("action_status");
+					boolean liked = (boolean)feed.get("is_liked");
 					Double amount = null;
 					try {
 						amount = (Double)feed.get("action_amount");
 					} catch (ClassCastException e) {
 						amount = Double.valueOf((Integer)feed.get("action_amount"));
 					}
-					userFeeds.add(new Feed(uid, username, date, type, description, amount, status));
+					userFeeds.add(new Feed(uid, username, date, type, description, amount, status, liked));
 				}
 				EventBus.postOnMain(context, new UserFeedsEvent(true, userFeeds));
 			}
@@ -369,8 +392,6 @@ public class Server {
 				Log.e("error: ", "" + builtErrorObject.getErrorCode());
 				Log.e("error: ", "" + builtErrorObject.getErrors());
 			}
-
-			
 		});
 	}
 }
