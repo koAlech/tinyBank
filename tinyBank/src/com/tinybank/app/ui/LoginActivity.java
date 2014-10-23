@@ -20,6 +20,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnLongClick;
 
 import com.squareup.otto.Subscribe;
 import com.tinybank.app.R;
@@ -36,6 +37,20 @@ public class LoginActivity extends Activity {
 	@InjectView(R.id.password) EditText password;
 	@InjectView(R.id.createAccount) TextView createAccount;
 	@InjectView(R.id.main_loading) ViewGroup spinner;
+	
+	@OnLongClick(R.id.logo) boolean speedLogin() {
+		if (userName.getText().toString().equals("shira@tinybank.com")) {
+			userName.setText("roni@gmail.com");
+		} else {
+			userName.setText("shira@tinybank.com");
+		}
+		password.setText("gordon");
+		password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		password.requestFocus();
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(password, InputMethodManager.SHOW_IMPLICIT);
+		return true;
+	}
 	
 	//private User user = null;
 	
@@ -127,9 +142,11 @@ public class LoginActivity extends Activity {
 					spinner.setVisibility(View.VISIBLE);
 		            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//					TODO		            
 //		            Server.login("shira@tinybank.com", "gordon");
 //		            Server.login("roni@gmail.com", "gordon");
 		            Server.login(userName.getText().toString(), password.getText().toString());
+//		            Server.login("roni@gmail.com", "gordon");
 		            return true;  
 		        }
 				return false;
@@ -163,19 +180,18 @@ public class LoginActivity extends Activity {
 	
 	@Subscribe
 	public void onLoginFinished(LoginEvent loginEvent) {
-		//Log.e("tinybank", "login success=" + loginEvent.isSuccess());
-		//Log.e("tinybank", "login user=" + loginEvent.getUser());
 		if (loginEvent.isSuccess()) {
 			User user = loginEvent.getUser();
+			name = user.getFirst_name();
 			if (user.getParent()) {
-				name = user.getFirst_name();
 				Server.getBankAccount(user.getUsername());
 			} else {
-				//TODO kid dashboard
-				Toast.makeText(getApplicationContext(), "TODO kid dashboard", Toast.LENGTH_SHORT).show();
+				spinner.setVisibility(View.INVISIBLE);
+				Intent intent = new Intent(getApplicationContext(), ChildFeedActivity.class);
+    			intent.putExtra("name", name);
+    			startActivity(intent);
+    			finish();
 			}
-			//Toast.makeText(getApplicationContext(), "login =>"+loginEvent.getUser(), Toast.LENGTH_SHORT).show();
-			
 		} else {
 			userName.setText("");
 			password.setText("");

@@ -46,6 +46,13 @@
             android:screenOrientation="portrait">
         </activity>
         
+        <activity
+            android:name="com.tinybank.app.ui.ChildFeedActivity"
+            android:label=""
+            android:icon="@drawable/logo_actionbar"
+            android:screenOrientation="portrait">
+        </activity>
+        
         <!-- To check network availability. Called every time when network connection state changes -->
         <receiver
             android:name="com.raweng.built.ConnectionStatus"

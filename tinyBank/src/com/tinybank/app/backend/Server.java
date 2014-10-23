@@ -139,6 +139,41 @@ public class Server {
 		    }
 	    });
 	}
+	public static void getTinyAccount(final String username) {
+		BuiltQuery query = new BuiltQuery("tiny_account");
+		query.where("username", username);
+		
+		query.exec(new QueryResultsCallBack() {
+			
+			@Override
+			public void onSuccess(QueryResult queryResultObject) {
+				BuiltObject tinyAccount = queryResultObject.getResultObjects().get(0);
+				Double balance = null;
+				try {
+					balance = (Double)tinyAccount.get("bank_account_balance");
+				} catch (ClassCastException e) {
+					balance = Double.valueOf((Integer)tinyAccount.get("bank_account_balance"));
+				}
+				ArrayList<TinyAccount> tinyAccounts = new ArrayList<TinyAccount>();
+				tinyAccounts.add(new TinyAccount(username, balance));
+				EventBus.postOnMain(context, new TinyAccountsEvent(true, tinyAccounts));
+			}
+			
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				// query failed
+				// the message, code and details of the error
+				Log.i("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.i("error: ", "" + builtErrorObject.getErrorCode());
+				Log.i("error: ", "" + builtErrorObject.getErrors());
+				EventBus.postOnMain(context, new TinyAccountsEvent(false, null));
+			}
+			
+			@Override
+			public void onAlways() {
+			}
+		});
+	}
 	public static void getTinyAccounts(String bank_account_id) {
 		
 		BuiltQuery query = new BuiltQuery("tiny_account");
