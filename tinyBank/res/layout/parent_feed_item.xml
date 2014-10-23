@@ -76,7 +76,7 @@
 			        android:layout_alignParentRight="true"
 			        android:layout_alignParentBottom="true"
 			        android:scaleType="centerCrop"
-			        android:visibility="gone"
+			        android:visibility="invisible"
 			        android:src="@drawable/more_actions_green"
 			        tools:ignore="ContentDescription" />
                 <ImageView
@@ -87,7 +87,7 @@
 			        android:paddingTop="10dp"
 			        android:layout_alignParentBottom="true"
 			        android:scaleType="centerCrop"
-			        android:visibility="gone"
+			        android:visibility="invisible"
 			        android:src="@drawable/more_actions_red"
 			        tools:ignore="ContentDescription" />
                 <ImageView
@@ -98,8 +98,19 @@
 			        android:layout_alignParentRight="true"
 			        android:layout_alignParentBottom="true"
 			        android:scaleType="centerCrop"
-			        android:visibility="gone"
+			        android:visibility="invisible"
 			        android:src="@drawable/pending"
+			        tools:ignore="ContentDescription" />
+                <ImageView
+			        android:id="@+id/parent_feed_action_like"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:paddingTop="10dp"
+			        android:layout_alignParentRight="true"
+			        android:layout_alignParentBottom="true"
+			        android:scaleType="centerCrop"
+			        android:visibility="invisible"
+			        android:src="@drawable/heart_action"
 			        tools:ignore="ContentDescription" />
                 
 	    	</RelativeLayout>

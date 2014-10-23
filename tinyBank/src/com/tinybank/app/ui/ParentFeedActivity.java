@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.squareup.otto.Subscribe;
@@ -35,11 +36,24 @@ public class ParentFeedActivity extends Activity {
 	
 	@InjectView(R.id.feed_listview) ListView listView;
 	@InjectView(R.id.accountImageView) ImageView accountImageView;
+	@InjectView(R.id.imagePlus) ImageView imagePlus;
 	@InjectView(R.id.feed_header_balance) TextView feed_header_balance;
 	@InjectView(R.id.feed_header_goal) TextView feed_header_goal;
 	
 	//@InjectView(R.id.button_floating_action) FloatingActionButton button_floating_action;
-	
+	@OnClick(R.id.imagePlus) void actions() {
+		AlertDialog alertDialog = new AlertDialog.Builder(ParentFeedActivity.this)
+    	.setTitle("Add Transaction")
+    	.setItems(new String[]{"Deposit", "Reward", "Participate", "Add Goal"}, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+    	})
+    	.create();
+    	alertDialog.show();
+	}
 	private ParentFeedAdapter parentFeedAdapter;
 	private double balance;
 	private String name;
@@ -104,7 +118,7 @@ public class ParentFeedActivity extends Activity {
         	    final Double amount = parentFeedAdapter.getItem(position).getAmount();
         	    final String status = parentFeedAdapter.getItem(position).getStatus();
         	    
-        	    if (!"badge".equals(type)) {
+        	    if ("deposit".equals(type)) {
         	    	AlertDialog alertDialog = new AlertDialog.Builder(ParentFeedActivity.this)
         	    	.setTitle("Deposit")
         	    	.setItems(new String[]{"Approve", "Match", "Reject"}, new DialogInterface.OnClickListener() {
@@ -137,6 +151,37 @@ public class ParentFeedActivity extends Activity {
         	    	})
         	    	.create();
         	    	alertDialog.show();
+        	    } else if ("withdrawal".equals(type)) {
+        	    	AlertDialog alertDialog = new AlertDialog.Builder(ParentFeedActivity.this)
+        	    	.setTitle("Withdrawal")
+        	    	.setItems(new String[]{"Approve", "Reject"}, new DialogInterface.OnClickListener() {
+        	    		
+        	    		@Override
+        	    		public void onClick(DialogInterface dialog, int which) {
+        	    			switch (which) {
+        	    			case 0:
+        	    				if (!"approved".equals(status)) {
+        	    					Server.approveDeposit(feedUid, username, -amount);
+        	    				}
+        	    				break;
+        	    			case 1:
+        	    				if (!"rejected".equals(status)) {
+        	    					Server.rejectDeposit(feedUid, username, -amount);
+        	    				}
+        	    				break;
+        	    				
+        	    			default:
+        	    				break;
+        	    			}
+        	    			dialog.dismiss();
+        	    			
+        	    		}
+        	    	})
+        	    	.create();
+        	    	alertDialog.show();
+        	    } else if ("badge".equals(type) || "goal_updated".equals(type)) {
+	        		  Toast.makeText(getApplicationContext(), "Activity Liked", Toast.LENGTH_SHORT).show();
+	        		  Server.toggleFeedLike(feedUid, true);
         	    }
         	  }
         	}); 

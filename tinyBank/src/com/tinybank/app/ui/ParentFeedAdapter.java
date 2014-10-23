@@ -42,6 +42,7 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
             viewHolder.imageGreen = (ImageView) view.findViewById(R.id.parent_feed_action_green);
             viewHolder.imageRed = (ImageView) view.findViewById(R.id.parent_feed_action_red);
             viewHolder.imagePending = (ImageView) view.findViewById(R.id.parent_feed_action_pending);
+            viewHolder.imageLike = (ImageView) view.findViewById(R.id.parent_feed_action_like);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -89,22 +90,31 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         }
         viewHolder.textViewDate.setText(d);
         
-        if ("approved".equals(status)) {
+        if ("badge".equals(type) || "goal_updated".equals(type)) {
+        	viewHolder.imageGreen.setVisibility(View.INVISIBLE);
+        	viewHolder.imageRed.setVisibility(View.INVISIBLE);
+        	viewHolder.imagePending.setVisibility(View.INVISIBLE);
+        	viewHolder.imageLike.setVisibility(View.VISIBLE);
+        } else if ("approved".equals(status)) {
         	viewHolder.imageGreen.setVisibility(View.VISIBLE);
         	viewHolder.imageRed.setVisibility(View.INVISIBLE);
         	viewHolder.imagePending.setVisibility(View.INVISIBLE);
+        	viewHolder.imageLike.setVisibility(View.INVISIBLE);
         } else if ("rejected".equals(status)) {
         	viewHolder.imageGreen.setVisibility(View.INVISIBLE);
         	viewHolder.imageRed.setVisibility(View.VISIBLE);
         	viewHolder.imagePending.setVisibility(View.INVISIBLE);
+        	viewHolder.imageLike.setVisibility(View.INVISIBLE);
         } else if ("pending".equals(status)) {
         	viewHolder.imageGreen.setVisibility(View.INVISIBLE);
         	viewHolder.imageRed.setVisibility(View.INVISIBLE);
         	viewHolder.imagePending.setVisibility(View.VISIBLE);
+        	viewHolder.imageLike.setVisibility(View.INVISIBLE);
         } else {
         	viewHolder.imageGreen.setVisibility(View.VISIBLE);
         	viewHolder.imageRed.setVisibility(View.INVISIBLE);
         	viewHolder.imagePending.setVisibility(View.INVISIBLE);
+        	viewHolder.imageLike.setVisibility(View.INVISIBLE);
         }
         setImageView(viewHolder, position);
 
@@ -153,5 +163,6 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         ImageView imageGreen;
         ImageView imageRed;
         ImageView imagePending;
+        ImageView imageLike;
     }
 }
