@@ -9,10 +9,10 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
+//import android.support.annotation.ColorRes;
+//import android.support.annotation.DimenRes;
+//import android.support.annotation.IntDef;
+//import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
+
+import com.tinybank.app.R;
 
 /**
  * Android Google+ like floating action button which reacts on the attached list view scrolling events.
@@ -31,7 +33,7 @@ public class FloatingActionButton extends ImageButton {
     private static final int TRANSLATE_DURATION_MILLIS = 200;
     private FabOnScrollListener mOnScrollListener;
 
-    @IntDef({TYPE_NORMAL, TYPE_MINI})
+    //@IntDef({TYPE_NORMAL, TYPE_MINI})
     public @interface TYPE {
     }
 
@@ -132,11 +134,11 @@ public class FloatingActionButton extends ImageButton {
         return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
     }
 
-    private int getColor(@ColorRes int id) {
+    private int getColor( int id) {
         return getResources().getColor(id);
     }
 
-    private int getDimension(@DimenRes int id) {
+    private int getDimension( int id) {
         return getResources().getDimensionPixelSize(id);
     }
 
@@ -177,7 +179,7 @@ public class FloatingActionButton extends ImageButton {
         }
     }
 
-    public void setColorNormalResId(@ColorRes int colorResId) {
+    public void setColorNormalResId( int colorResId) {
         setColorNormal(getColor(colorResId));
     }
 
@@ -192,7 +194,7 @@ public class FloatingActionButton extends ImageButton {
         }
     }
 
-    public void setColorPressedResId(@ColorRes int colorResId) {
+    public void setColorPressedResId( int colorResId) {
         setColorPressed(getColor(colorResId));
     }
 
@@ -279,11 +281,11 @@ public class FloatingActionButton extends ImageButton {
      * If need to use custom {@link android.widget.AbsListView.OnScrollListener},
      * pass it to {@link #attachToListView(android.widget.AbsListView, com.melnykov.fab.FloatingActionButton.FabOnScrollListener)}
      */
-    public void attachToListView(@NonNull AbsListView listView) {
+    public void attachToListView(AbsListView listView) {
         attachToListView(listView, new FabOnScrollListener());
     }
 
-    public void attachToListView(@NonNull AbsListView listView, @NonNull FabOnScrollListener onScrollListener) {
+    public void attachToListView(AbsListView listView, FabOnScrollListener onScrollListener) {
         mListView = listView;
         mOnScrollListener = onScrollListener;
         onScrollListener.setFloatingActionButton(this);

@@ -3,6 +3,8 @@ package com.melnykov.fab;
 import android.view.View;
 import android.widget.AbsListView;
 
+import com.tinybank.app.R;
+
 /**
  * Detects which direction list view was scrolled.
  * <p/>
