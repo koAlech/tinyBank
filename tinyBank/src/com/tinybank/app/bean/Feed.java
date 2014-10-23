@@ -8,8 +8,10 @@ public class Feed {
 	private String description;
 	private Double amount;
 	private String status;
+	private boolean liked;
+	
 	public Feed(String uid, String username, String date, String type,
-			String description, Double amount, String status) {
+			String description, Double amount, String status, boolean liked) {
 		super();
 		this.uid = uid;
 		this.username = username;
@@ -18,6 +20,7 @@ public class Feed {
 		this.description = description;
 		this.amount = amount;
 		this.status = status;
+		this.liked = liked;
 	}
 	public String getUid() {
 		return uid;
@@ -40,5 +43,9 @@ public class Feed {
 	public String getStatus() {
 		return status;
 	}
+	public boolean isLiked() {
+		return liked;
+	}
+	
 	
 }
