@@ -46,7 +46,7 @@ public class DashboardActivity extends Activity {
 		bank_account_id = intent.getStringExtra("bank_account_id");
 		
 		dashboard_header_name.setText("Good morning " + name);
-		dashboard_header_account.setText("Account #"+bank_account_id+" @ " + bank_name);
+		dashboard_header_account.setText("Account# "+bank_account_id+" @ " + bank_name);
 		dashboard_header_balance.setText("Balance $" + String.valueOf(balance));
 		
 		mGoogleCardsAdapter = new GoogleCardsAdapter(this);
