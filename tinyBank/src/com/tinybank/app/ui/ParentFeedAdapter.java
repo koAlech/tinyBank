@@ -44,8 +44,14 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         }
         viewHolder.textViewName.setText(getItem(position).getUsername());
         NumberFormat numberFormat  = new DecimalFormat("#.00");
-        String balance = numberFormat.format(getItem(position).getAmount());
-        viewHolder.textViewBalance.setText("Account balance: $"+balance);
+        Double amount = getItem(position).getAmount();
+        if (amount != null) {
+        	String balance = numberFormat.format(getItem(position).getAmount());
+        	viewHolder.textViewBalance.setText("Account balance: $"+balance);
+        } else {
+        	viewHolder.textViewBalance.setText("");
+        }
+        
         setImageView(viewHolder, position);
 
         return view;
@@ -65,20 +71,6 @@ public class ParentFeedAdapter extends ArrayAdapter<Feed> {
         } else {
         	imageResId = R.drawable.user_amitai;
         }
-//        switch (getItem(position) % 5) {
-//            case 0:
-//                imageResId = R.drawable.img_nature1;
-//                break;
-//            case 1:
-//                imageResId = R.drawable.img_nature2;
-//                break;
-//            case 2:
-//                imageResId = R.drawable.img_nature3;
-//                break;
-//            default:
-//                imageResId = R.drawable.img_nature3;
-//        }
-        
         
         Bitmap bitmap = getBitmapFromMemCache(imageResId);
         if (bitmap == null) {

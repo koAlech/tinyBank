@@ -1,5 +1,7 @@
 package com.tinybank.app.ui;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -57,13 +59,14 @@ public class ParentFeedActivity extends Activity {
         } else if ("Yaniv".equals(name)) {
         	accountImageView.setImageResource(R.drawable.user_yaniv);
         } else if ("Roni".equals(name)) {
-        	accountImageView.setImageResource(R.drawable.user_roni);
+        	accountImageView.setImageResource(R.drawable.roni_profile_image);
         } else {
         	accountImageView.setImageResource(R.drawable.user_amitai);
         }
 		
 		double balance = intent.getDoubleExtra("balance", 0);
-		feed_header_balance.setText("balance"+balance);
+		NumberFormat numberFormat  = new DecimalFormat("#.00");
+		feed_header_balance.setText("$" + numberFormat.format(balance));
 		
 		parentFeedAdapter = new ParentFeedAdapter(this);
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(parentFeedAdapter);

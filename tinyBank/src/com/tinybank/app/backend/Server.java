@@ -377,7 +377,11 @@ public class Server {
 					try {
 						amount = (Double)feed.get("action_amount");
 					} catch (ClassCastException e) {
-						amount = Double.valueOf((Integer)feed.get("action_amount"));
+						try {
+							amount = Double.valueOf((Integer)feed.get("action_amount"));
+						} catch (Exception ex) {
+							amount = null;
+						}
 					}
 					userFeeds.add(new Feed(uid, username, date, type, description, amount, status, liked));
 				}
