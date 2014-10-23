@@ -18,6 +18,7 @@ import com.raweng.built.BuiltUser;
 import com.raweng.built.QueryResult;
 import com.raweng.built.QueryResultsCallBack;
 import com.tinybank.app.bean.Feed;
+import com.tinybank.app.bean.Goal;
 import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.bean.User;
 import com.tinybank.app.event.BankAccountEvent;
@@ -25,6 +26,7 @@ import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.LoginEvent;
 import com.tinybank.app.event.TinyAccountsEvent;
 import com.tinybank.app.event.UserFeedsEvent;
+import com.tinybank.app.event.UserGoalsEvent;
 
 public class Server {
 
@@ -393,5 +395,199 @@ public class Server {
 				Log.e("error: ", "" + builtErrorObject.getErrors());
 			}
 		});
+	}
+	public static void getGoals(String username) {
+		BuiltQuery query = new BuiltQuery("goals");
+		query.where("username", username);
+		query.descending("update_date");
+		
+		query.exec(new QueryResultsCallBack() {
+
+			@Override
+			public void onSuccess(QueryResult queryResultObject) {
+				List<BuiltObject> objects = queryResultObject.getResultObjects();
+				ArrayList<Goal> userGoals = new ArrayList<Goal>();
+				
+				for (Object object : objects) {
+					
+					BuiltObject goal = (BuiltObject) object;
+					String uid = goal.getUid();
+					String username = (String)goal.get("username");
+					String date = (String)goal.get("update_date");
+					String description = (String)goal.get("description");
+					Double goalTarget = null;
+					try {
+						goalTarget = (Double)goal.get("goal_amount");
+					} catch (ClassCastException e) {
+						goalTarget = Double.valueOf((Integer)goal.get("goal_amount"));
+					}
+					Double goalBalance = null;
+					try {
+						goalTarget = (Double)goal.get("goal_balance");
+					} catch (ClassCastException e) {
+						goalTarget = Double.valueOf((Integer)goal.get("goal_balance"));
+					}
+					userGoals.add(new Goal(uid, username, date, description, goalTarget, goalBalance));
+				}
+				EventBus.postOnMain(context, new UserGoalsEvent(true, userGoals));
+			}
+			
+			@Override
+			public void onAlways() {
+			}
+
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.e("error: ", "" + builtErrorObject.getErrorCode());
+				Log.e("error: ", "" + builtErrorObject.getErrors());
+			}
+		});
+	}
+	public static void addGoalAmount(String goalId, final double amount) {
+		
+		BuiltQuery query = new BuiltQuery("goals");
+		query.where("uid", goalId);
+		
+		query.exec(new QueryResultsCallBack() {
+			
+			@Override
+			public void onSuccess(QueryResult queryResultObject) {
+				BuiltObject goal = queryResultObject.getResultObjects().get(0);
+				Double balance = null;
+				try {
+					balance = (Double)goal.get("goal_balance");
+				} catch (ClassCastException e) {
+					balance = Double.valueOf((Integer)goal.get("goal_balance"));
+				}
+				balance += amount;
+				goal.set("goal_balance", Double.toString(balance));
+				
+				goal.save(new BuiltResultCallBack() {
+					@Override
+					public void onSuccess() {
+					}
+					@Override
+					public void onError(BuiltError builtErrorObject) {
+						Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+						Log.e("error: ", "" + builtErrorObject.getErrorCode());
+						Log.e("error: ", "" + builtErrorObject.getErrors());
+						// there was an error in updating the object
+						// builtErrorObject will contain more details
+					}
+					@Override
+					public void onAlways() {
+						// write code here that you want to execute
+						// regardless of success or failure of the operation
+					}
+				});
+			}
+			
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				// query failed
+				// the message, code and details of the error
+				Log.i("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.i("error: ", "" + builtErrorObject.getErrorCode());
+				Log.i("error: ", "" + builtErrorObject.getErrors());
+			}
+			
+			@Override
+			public void onAlways() {
+			}
+		});
+	}
+	public static void deleteGoal(String goalId) {
+
+	    BuiltObject object = new BuiltObject("goals");
+	    object.setUid(goalId);
+	    object.destroy(new BuiltResultCallBack() {
+		    @Override
+		    public void onSuccess() {
+		    // object is deleted
+		    }
+		    @Override
+		    public void onError(BuiltError builtErrorObject) {
+		    	Log.i("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.i("error: ", "" + builtErrorObject.getErrorCode());
+				Log.i("error: ", "" + builtErrorObject.getErrors());
+		    }
+		    @Override
+		    public void onAlways() {
+		    // write code here that you want to execute
+		    // regardless of success or failure of the operation
+		    }
+	    });
+	}
+	public static void askGoalHelp(String username, String goalId) {
+
+	    BuiltObject object = new BuiltObject("feed");
+	    object.set("username", username);
+	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+	    object.set("action_date", df.format(new Date()));
+	    object.set("action_type", "goal_help");
+	    object.set("action_description", goalId);
+	    object.set("action_status", "pending");
+	    
+	    object.save(new BuiltResultCallBack() {
+		    @Override
+		    public void onSuccess() {
+		    }
+		    
+		    @Override
+		    public void onError(BuiltError builtErrorObject) {
+		    	Log.i("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.i("error: ", "" + builtErrorObject.getErrorCode());
+				Log.i("error: ", "" + builtErrorObject.getErrors());
+		    }
+		    @Override
+		    public void onAlways() {
+		    // write code here that you want to execute
+		    // regardless of success or failure of the operation
+		    }
+	    });
+	}
+	public static void answerGoalHelp(String helpId, String goalId, boolean accept, double amount) {
+		BuiltObject object = new BuiltObject("feed");
+	    object.setUid(helpId);
+	    object.set("action_status", (accept ? "approved" : "rejected"));
+		object.save(new BuiltResultCallBack() {
+			@Override
+			public void onSuccess() {
+			}
+			@Override
+			public void onError(BuiltError builtErrorObject) {
+				Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+				Log.e("error: ", "" + builtErrorObject.getErrorCode());
+				Log.e("error: ", "" + builtErrorObject.getErrors());
+			}
+			@Override
+			public void onAlways() {
+				// write code here that you want to execute
+				// regardless of success or failure of the operation
+			}
+		});
+		
+		if (accept) {
+			BuiltObject objectGoal = new BuiltObject("goal");
+		    objectGoal.setUid(goalId);
+		    objectGoal.set("goal_balance", amount);
+			objectGoal.save(new BuiltResultCallBack() {
+				@Override
+				public void onSuccess() {
+				}
+				@Override
+				public void onError(BuiltError builtErrorObject) {
+					Log.e("error: ", "" + builtErrorObject.getErrorMessage());
+					Log.e("error: ", "" + builtErrorObject.getErrorCode());
+					Log.e("error: ", "" + builtErrorObject.getErrors());
+				}
+				@Override
+				public void onAlways() {
+					// write code here that you want to execute
+					// regardless of success or failure of the operation
+				}
+			});
+		}
 	}
 }
