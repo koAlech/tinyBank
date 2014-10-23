@@ -83,10 +83,12 @@ public class TinyAccountActivity extends Activity {
 	public void onTinyAccountsEventFinished(TinyAccountsEvent tinyAccountsEvent) {
 		if (tinyAccountsEvent.isSuccess()) {
 			
-			int count = tinyAccountAdapter.getCount();
-			for (int i = 0; i < count; i++) {
-				tinyAccountAdapter.remove(tinyAccountAdapter.getItem(i));
-	        }
+			tinyAccountAdapter.clear();
+		    
+//			int count = tinyAccountAdapter.getCount();
+//			for (int i = 0; i < count; i++) {
+//				tinyAccountAdapter.remove(tinyAccountAdapter.getItem(i));
+//	        }
 			
 			ArrayList<TinyAccount> tinyAccounts = tinyAccountsEvent.getTinyAccounts();
 			
@@ -95,6 +97,7 @@ public class TinyAccountActivity extends Activity {
 				tinyAccountAdapter.add(tinyAccount);
 			}
 			
+			tinyAccountAdapter.notifyDataSetChanged();
 		}
 	}
 	
