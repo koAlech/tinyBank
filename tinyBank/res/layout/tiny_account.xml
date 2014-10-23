@@ -1,58 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/card_background_white"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
-    tools:ignore="overdraw">
+    android:padding="0dp"
+    android:layout_margin="0dp" >
+    
+    <RelativeLayout
+        android:id="@+id/dashboard_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/container_dropshadow" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="horizontal">
-    	
         <ImageView
-	        android:id="@+id/dashboard_account_imageview"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:scaleType="centerCrop"
-	        tools:ignore="ContentDescription" />
-        
-        <LinearLayout
-	        android:layout_width="match_parent"
-	    	android:layout_height="wrap_content"
-	    	android:paddingLeft="10dp"
-	    	android:orientation="vertical">
-    	
-            <TextView
-		        android:id="@+id/dashboard_account_name"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:fontFamily="sans-serif-light"
-		        android:paddingBottom="0dp"
-		        android:textSize="20dp"
-		        android:textColor="?android:attr/textColorSecondary"
-		        tools:ignore="UnusedAttribute" />
-            
-            <TextView
-		        android:id="@+id/dashboard_account_balance"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:fontFamily="sans-serif-light"
-		        android:paddingBottom="10dp"
-		        android:textSize="14dp"
-		        android:textColor="?android:attr/textColorSecondary"
-		        tools:ignore="UnusedAttribute" />
-            
-            <View 
-		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:background="#30000000" />
-            
-    	</LinearLayout>
-        
-    </LinearLayout>
+            android:id="@+id/imageView1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/parent_avatar" >
+        </ImageView>
 
+        <TextView
+            android:id="@+id/dashboard_header_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageView1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="0dp"
+            android:text="Good morning Shira"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/dashboard_header_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dashboard_header_name"
+            android:layout_below="@+id/dashboard_header_name"
+            android:layout_alignParentRight="true"
+            android:padding="0dp"
+            android:text="Account# 21222111 @ Leumi Bank"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/dashboard_header_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dashboard_header_account"
+            android:layout_below="@+id/dashboard_header_account"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:padding="0dp"
+            android:text="balance $12,123"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#20000000" />
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#30000000" />
+    
+    <ListView
+        android:id="@+id/activity_googlecards_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/dashboard_header"
+        android:background="#e2e2e2"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="8dp"
+        android:fadingEdge="none"
+        android:fitsSystemWindows="true"
+        android:padding="12dp"
+        android:scrollbarStyle="outsideOverlay" />
+    
 </LinearLayout>

@@ -33,13 +33,13 @@ import com.tinybank.app.R;
 import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.ui.util.BitmapCache;
 
-public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
+public class TinyAccountAdapter extends ArrayAdapter<TinyAccount> {
 
 	private final Context mContext;
     private final BitmapCache mMemoryCache;
 
-    public GoogleCardsAdapter(Context context) {
-		super(context, R.layout.tiny_account);
+    public TinyAccountAdapter(Context context) {
+		super(context, R.layout.tiny_account_item);
 		mContext = context;
         mMemoryCache = new BitmapCache();
 	}
@@ -49,7 +49,7 @@ public class GoogleCardsAdapter extends ArrayAdapter<TinyAccount> {
         ViewHolder viewHolder;
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.tiny_account, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.tiny_account_item, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.textViewName = (TextView) view.findViewById(R.id.dashboard_account_name);
             viewHolder.textViewBalance = (TextView) view.findViewById(R.id.dashboard_account_balance);

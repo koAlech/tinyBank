@@ -23,14 +23,14 @@ import com.tinybank.app.bean.TinyAccount;
 import com.tinybank.app.event.EventBus;
 import com.tinybank.app.event.TinyAccountsEvent;
 
-public class DashboardActivity extends Activity {
+public class TinyAccountActivity extends Activity {
 
 	@InjectView(R.id.activity_googlecards_listview) ListView listView;
 	@InjectView(R.id.dashboard_header_name) TextView dashboard_header_name;
 	@InjectView(R.id.dashboard_header_account) TextView dashboard_header_account;
 	@InjectView(R.id.dashboard_header_balance) TextView dashboard_header_balance;
 	
-	private GoogleCardsAdapter mGoogleCardsAdapter;
+	private TinyAccountAdapter mGoogleCardsAdapter;
 	
 	private String bank_account_id;
 	
@@ -38,7 +38,7 @@ public class DashboardActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		EventBus.register(this);
-		setContentView(R.layout.dashboard);
+		setContentView(R.layout.tiny_account);
 		ButterKnife.inject(this);
 		
 		Intent intent = getIntent();
@@ -52,7 +52,7 @@ public class DashboardActivity extends Activity {
 		NumberFormat numberFormat  = new DecimalFormat("#.00");
 		dashboard_header_balance.setText("Balance $" + numberFormat.format(balance));
 		
-		mGoogleCardsAdapter = new GoogleCardsAdapter(this);
+		mGoogleCardsAdapter = new TinyAccountAdapter(this);
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(mGoogleCardsAdapter);
         swingBottomInAnimationAdapter.setAbsListView(listView);
 		swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);

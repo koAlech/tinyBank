@@ -147,7 +147,7 @@ public class LoginActivity extends Activity {
 			balance = bankAccountEvent.getBalance();
 			bank_name = bankAccountEvent.getBank_name();
 			bank_account_id = bankAccountEvent.getBank_account_id();
-			Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+			Intent intent = new Intent(getApplicationContext(), TinyAccountActivity.class);
 			intent.putExtra("name", name);
 			intent.putExtra("balance", balance);
 			intent.putExtra("bank_name", bank_name);
