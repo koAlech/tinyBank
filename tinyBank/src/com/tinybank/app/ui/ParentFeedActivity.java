@@ -74,15 +74,15 @@ public class ParentFeedActivity extends Activity {
 		
 		
 		if ("Amitai".equals(name)) {
-			accountImageView.setImageResource(R.drawable.user_amitai);//TODO
+			accountImageView.setImageResource(R.drawable.amitai_profile_image);
         } else if ("ET".equals(name)) {
-        	accountImageView.setImageResource(R.drawable.user_et);//TODO
+        	accountImageView.setImageResource(R.drawable.et_profile_image);
         } else if ("Yaniv".equals(name)) {
-        	accountImageView.setImageResource(R.drawable.user_yaniv);//TODO
+        	accountImageView.setImageResource(R.drawable.yaniv_profile_image);
         } else if ("Roni".equals(name)) {
         	accountImageView.setImageResource(R.drawable.roni_profile_image);
         } else {
-        	accountImageView.setImageResource(R.drawable.user_amitai);//TODO
+        	accountImageView.setImageResource(R.drawable.amitai_profile_image);
         }
 		
 		balance = intent.getDoubleExtra("balance", 0);
