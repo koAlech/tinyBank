@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +35,7 @@ public class LoginActivity extends Activity {
 	@InjectView(R.id.userName) EditText userName;
 	@InjectView(R.id.password) EditText password;
 	@InjectView(R.id.createAccount) TextView createAccount;
+	@InjectView(R.id.main_loading) ViewGroup spinner;
 	
 	//private User user = null;
 	
@@ -122,6 +124,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					spinner.setVisibility(View.VISIBLE);
 		            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		            Server.login("shira@tinybank.com", "gordon");
@@ -142,6 +145,7 @@ public class LoginActivity extends Activity {
 	
 	@Subscribe
 	public void onBankAccountFinished(BankAccountEvent bankAccountEvent) {
+		spinner.setVisibility(View.INVISIBLE);
 		if (bankAccountEvent.isSuccess()) {
 			balance = bankAccountEvent.getBalance();
 			bank_name = bankAccountEvent.getBank_name();
@@ -167,6 +171,7 @@ public class LoginActivity extends Activity {
 				Server.getBankAccount(user.getUsername());
 			} else {
 				//TODO kid dashboard
+				Toast.makeText(getApplicationContext(), "TODO kid dashboard", Toast.LENGTH_SHORT).show();
 			}
 			//Toast.makeText(getApplicationContext(), "login =>"+loginEvent.getUser(), Toast.LENGTH_SHORT).show();
 			

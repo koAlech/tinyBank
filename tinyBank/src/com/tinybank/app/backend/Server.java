@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -57,8 +59,14 @@ public class Server {
 						String email = builtUserObject.getEmailId();
 						String first_name = builtUserObject.getFirstName();
 						String last_name = builtUserObject.getLastName();
-						String type = (String)builtUserObject.get("user_type");
-						Log.e("tinybank", builtUserObject.toJSON().toString());
+//						String type = (String)builtUserObject.get("user_type");
+						String type = null;
+						try {
+							type = builtUserObject.toJSON().getJSONObject("application_user").getString("user_type");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+//						Log.e("tinybank", builtUserObject.toJSON().toString());
 						//TODO REMOVE
 						if (type == null) {
 							if (username.equals("shira")) {
